@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Carta</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    font-family: Georgia, serif;
+    color: #dcdcdc;
+    overflow: hidden;
+}
+
+/* lluvia */
+.rain {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.drop {
+    position: absolute;
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.1);
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to { transform: translateY(100vh); }
+}
+
+/* carta */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.sobre {
+    width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.8);
+    padding: 30px;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #6f7a8c;
+}
+
+/* final */
+.final {
+    position: fixed;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    font-size: 26px;
+    opacity: 0;
+    transition: 3s;
+}
+</style>
+</head>
+
+<body>
+
+<div class="rain" id="rain"></div>
+
+<div class="final" id="finalText">
+Perdón… por ser todo un desastre
+</div>
+
+<audio id="audio" loop>
+    <source src="audio.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="carta">
+    <div class="sobre">
+        <h1>Perdóname</h1>
+        <p id="texto"></p>
+    </div>
+</div>
+
+<script>
+// lluvia ligera (estable)
+for (let i = 0; i < 150; i++) {
+    let d = document.createElement("div");
+    d.className = "drop";
+    d.style.left = Math.random()*100+"vw";
+    d.style.animationDuration = (Math.random()+0.5)+"s";
+    document.getElementById("rain").appendChild(d);
+}
+
+// TEXTO ORIGINAL
+const text = "Antes de irme quiero pedirte perdón de verdad, sé que amarme no es fácil y que entenderme a veces es aún más difícil, perdón por todo lo que has tenido que soportar conmigo, perdóname por mis lágrimas constantes y por hacerte cargar con mis emociones, perdón por mi actitud que muchas veces te hizo sentir que no me importabas cuando en realidad eres lo más importante para mí, perdóname por no saber entenderte y por no comprender tus bromas, por exagerar todo, por sobrepensar y por desconfiar tanto, perdón por mi carácter, por ser inseguro, egoísta e inmaduro, por hacerte sentir que querías irte, por insistir tanto hasta cansarte y por no respetar tus decisiones, perdóname por las veces que te acusé injustamente y por tratarte mal, por decir cosas horribles que nunca debí decir, me duele reconocer todo el daño que te hice y más me duele saber que fue por lo complicado que soy, sé que no soy el hombre que mereces pero te amo como nunca he amado a nadie, daría todo incluso mi vida solo por verte feliz, sé que muchas veces prometo cambiar y fallo pero quiero seguir intentando porque tú vales cada esfuerzo, hemos tenido muchas discusiones y ahora estamos en un momento difícil pero quiero que sepas que mi amor por ti no cambia, no importa lo enojados o heridos que estemos lo que siento por ti sigue siendo real, fuerte y sincero, nunca nuestros problemas han sido más grandes que el amor que tengo por ti, siempre serás la persona por la que me levanto cada día, la razón por la que mis días tienen sentido, perdóname por todo el dolor que te hice sentir de verdad lo siento";
+
+const texto = document.getElementById("texto");
+const audio = document.getElementById("audio");
+
+let i = 0;
+
+// escribir estable
+function escribir() {
+    if (i < text.length) {
+        texto.textContent += text[i];
+        i++;
+        setTimeout(escribir, 25);
+    }
+}
+escribir();
+
+// AUDIO 100% FUNCIONAL
+document.addEventListener("click", () => {
+    audio.play();
+}, { once: true });
+
+// FINAL
+setTimeout(() => {
+    document.getElementById("carta").style.opacity = 0;
+    document.getElementById("finalText").style.opacity = 1;
+}, text.length * 25 + 3000);
+
+</script>
+
+</body>
+</html>
